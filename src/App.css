@@ -9,6 +9,7 @@
   background-color: brown;
   padding: 10px;
   border-radius: 10px;
+  z-index: 2;
 }
 .tag-list.hidden {
   top: 0%;

@@ -3,17 +3,19 @@ import './App.css';
 import Grid from './components/Grid';
 import GridStagger from './components/GridStagger';
 import Single from './components/Single';
-import {Image, Tag, getSfwTags, getNsfwTags, getAllTags, getRandomImages} from './WaifuApi';
+import {Image0, Tag, getSfwTags, getNsfwTags, getAllTags, getRandomImages} from './WaifuApi';
 
 interface TagIntf{
   [key:string] : boolean[]
 }
 
 function App() {
-  let [urlList, setUrlList] = useState<string[]>([]);
+  let [imageList, setImageList] = useState<Image0[]>([]);
   let [tagStates, setTagStates] = useState<TagIntf[]>([]);
   let [tagList, setTagList] = useState<Tag[]>([]);
   let [visibleUI, setVisibleUI] = useState(false);
+  let [visibleSingle, setVisibleSingle] = useState(false);
+  let [indexSingle, setIndexSingle] = useState(0);
 
   useEffect(()=>{    
     getAllTags().then(tagList => {
@@ -55,19 +57,29 @@ function App() {
     });
     getRandomImages(selected_tags, excluded_tags)
     .then(list => {
-      let temp:string[] = [];
-      list.forEach(image => temp.push(image.url));
-      setUrlList(temp);
+      let tmpImageList:Image0[] = [];
+      list.forEach(image => tmpImageList.push(image));
+      setImageList(tmpImageList);
     });
   }
 
-  const toggleUI = ()=> {
+  const toggleUI = ()=> {      //toggle tag select UI
     setVisibleUI(!visibleUI);
   }
   
+  const handleImageClick = (index: number)=>{
+    setIndexSingle(index);
+    setVisibleSingle(!visibleSingle);
+  }
+
   return (
     <div className="App">
-      <Single urlList={urlList} index={2}/>
+      <Single 
+        imageList={imageList} 
+        index={indexSingle}
+        extraClass={visibleSingle ? 'visible':'hidden'}
+        closeSingle={handleImageClick}
+      />
       <button onClick={toggleUI}>{visibleUI? 'Hide Tags':'Select Tags'}</button>
       <div className={`tag-list ${visibleUI ? 'visible':'hidden'}`}>
         {
@@ -101,7 +113,10 @@ function App() {
         }  
         <button onClick={submitHandler}>Submit</button>
       </div>
-      <GridStagger urlList={urlList} />
+      <GridStagger 
+        imageList={imageList}
+        handleImageClick={handleImageClick}  
+      />
     </div>
   );
 }

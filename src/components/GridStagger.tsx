@@ -1,8 +1,10 @@
 import React, {useState, useEffect} from "react";
+import { Image0 } from "../WaifuApi";
 import './GridStagger.css'
 
 interface Props{
-    urlList: string[]
+    imageList: Image0[]
+    handleImageClick(index: number): void
 }
 
 interface LoadedImage{
@@ -22,23 +24,21 @@ export default function GridStagger(props: Props){
         })
     }
 
-    useEffect(()=>{
-        console.log('useEffect called') 
-        if(loadedImageList.length >= props.urlList.length){
+    useEffect(()=>{ 
+        if(loadedImageList.length >= props.imageList.length){
             return;
         }
-        console.log(loadedImageList);
         let img = new Image();
         img.onload = ()=> {
             let tmp = loadedImageList.concat([{
-                url: props.urlList[loadedImageList.length],
+                url: props.imageList[loadedImageList.length].url,
                 width: img.width,
                 height: img.height
             }])
             setLoadedImageList(tmp);
         }
-        img.src = props.urlList[loadedImageList.length];
-    }, [loadedImageList, props.urlList]);
+        img.src = props.imageList[loadedImageList.length].url;
+    }, [loadedImageList, props.imageList]);
 
     const findMinIndex = (arr: number[])=>{
         let i = 0;
@@ -49,7 +49,6 @@ export default function GridStagger(props: Props){
                 last = val;
             }
         })
-        console.log(i);
         return i;
     }
     let minWidth = 300;
@@ -62,13 +61,16 @@ export default function GridStagger(props: Props){
     return (
         <div className="stagger-container">
             {
-                loadedImageList.map(image => {
+                loadedImageList.map((image, index) => {
                 let minIndex = findMinIndex(sets);
                 let left = minIndex*width;
                 let top = sets[minIndex];
                 sets[minIndex] += (image.height/image.width)*width;
                 return(
-                    <div style={{top: `${top}px`, left: `${left}px`, width: `${width}px`}}>
+                    <div 
+                        style={{top: `${top}px`, left: `${left}px`, width: `${width}px`}}
+                        onClick={()=>props.handleImageClick(index)}    
+                    >
                         <img src={image.url} />
                     </div>
                 );

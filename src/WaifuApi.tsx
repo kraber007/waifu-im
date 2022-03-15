@@ -5,7 +5,7 @@ export interface Tag{
     name: string
 }
 
-export interface Image{
+export interface Image0{
     file: string,
     extension: string,
     image_id: number,
@@ -42,7 +42,7 @@ export function getRandomImages(
     order_by?: "FAVORITES" | "UPLOADED_AT",
     many = true,
     excluded_files?: string[]
-) : Promise<Image[]>{
+) : Promise<Image0[]>{
     let url = "https://api.waifu.im/random/?";
     selected_tags?.forEach(tag => url += `&selected_tags=${tag}`);
     excluded_tags?.forEach(tag => url += `&excluded_tags=${tag}`);

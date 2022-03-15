@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from "react";
+import { Image0 } from "../WaifuApi";
 import './Grid.css'
 
 interface Props{
-    urlList: string[]
+    imageList: Image0[]
 }
 
 interface LoadedImage{
@@ -17,21 +18,21 @@ export default function Grid(props: Props){
 
     useEffect(()=>{
         console.log('useEffect called') 
-        if(loadedImageList.length >= props.urlList.length){
+        if(loadedImageList.length >= props.imageList.length){
             return;
         }
         console.log(loadedImageList);
         let img = new Image();
         img.onload = ()=> {
             let tmp = loadedImageList.concat([{
-                url: props.urlList[loadedImageList.length],
+                url: props.imageList[loadedImageList.length].url,
                 width: img.width,
                 height: img.height
             }])
             setLoadedImageList(tmp);
         }
-        img.src = props.urlList[loadedImageList.length];
-    }, [loadedImageList, props.urlList]);
+        img.src = props.imageList[loadedImageList.length].url;
+    }, [loadedImageList, props.imageList]);
 
     return (
         <div className="grid-container">
