@@ -8,7 +8,7 @@ interface TagIntf{
 }
 
 function App() {
-  let [imageList, setImageList] = useState<Image[]>([]);
+  let [urlList, setUrlList] = useState<string[]>([]);
   let [tagStates, setTagStates] = useState<TagIntf[]>([]);
   let [tagList, setTagList] = useState<Tag[]>([]);
   let [visibleUI, setVisibleUI] = useState(false);
@@ -55,7 +55,7 @@ function App() {
     .then(list => {
       let temp:string[] = [];
       list.forEach(image => temp.push(image.url));
-      setImageList(list);
+      setUrlList(temp);
     });
   }
 
@@ -98,7 +98,7 @@ function App() {
         }  
         <button onClick={submitHandler}>Submit</button>
       </div>
-      <Grid imageList={imageList} />
+      <Grid urlList={urlList} />
     </div>
   );
 }

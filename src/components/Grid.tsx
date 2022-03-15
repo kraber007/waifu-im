@@ -1,23 +1,42 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import './Grid.css'
-import {Image} from '../WaifuApi'
 
 interface Props{
-    imageList: Image[]
+    urlList: string[]
+}
+
+interface LoadedImage{
+    url: string,
+    width: number,
+    height: number
 }
 
 export default function Grid(props: Props){
+
+    let [loadedImageList, setLoadedImageList] = useState<LoadedImage[]>([]);
+
+    useEffect(()=>{
+        console.log('useEffect called') 
+        if(loadedImageList.length >= props.urlList.length){
+            return;
+        }
+        console.log(loadedImageList);
+        let img = new Image();
+        img.onload = ()=> {
+            let tmp = loadedImageList.concat([{
+                url: props.urlList[loadedImageList.length],
+                width: img.width,
+                height: img.height
+            }])
+            setLoadedImageList(tmp);
+        }
+        img.src = props.urlList[loadedImageList.length];
+    }, [loadedImageList, props.urlList]);
+
     return (
         <div className="grid-container">
-            {props.imageList.map(image => {
-                // let img = new Image();
-                // img.onload = function(){
-                //     console.log(`${img.width} X ${img.height}`);
-                // }
-                // img.src = image.url;
-                let style = {backgroundColor: image.dominant_color}
-                return (
-                    // <div style={style}>
+            {loadedImageList.map(image => {
+                return(
                     <div>
                         <img src={image.url} />
                     </div>
