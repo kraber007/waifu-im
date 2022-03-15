@@ -5,7 +5,7 @@ export interface Tag{
     name: string
 }
 
-interface Image{
+export interface Image{
     file: string,
     extension: string,
     image_id: number,

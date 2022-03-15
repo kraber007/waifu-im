@@ -1,16 +1,17 @@
 import { useEffect, useState } from 'react';
 import './App.css';
 import Grid from './components/Grid';
-import {Tag, getSfwTags, getNsfwTags, getAllTags, getRandomImages} from './WaifuApi';
+import {Image, Tag, getSfwTags, getNsfwTags, getAllTags, getRandomImages} from './WaifuApi';
 
 interface TagIntf{
   [key:string] : boolean[]
 }
 
 function App() {
-  let [urlList, setUrlList] = useState<string[]>([]);
+  let [imageList, setImageList] = useState<Image[]>([]);
   let [tagStates, setTagStates] = useState<TagIntf[]>([]);
   let [tagList, setTagList] = useState<Tag[]>([]);
+  let [visibleUI, setVisibleUI] = useState(false);
 
   useEffect(()=>{    
     getAllTags().then(tagList => {
@@ -39,6 +40,7 @@ function App() {
   }
 
   const submitHandler = ()=> {
+    toggleUI();
     let selected_tags: string[] = [];
     let excluded_tags: string[] = [];
     tagStates.forEach(tag => {
@@ -53,13 +55,18 @@ function App() {
     .then(list => {
       let temp:string[] = [];
       list.forEach(image => temp.push(image.url));
-      setUrlList(temp);
+      setImageList(list);
     });
+  }
+
+  const toggleUI = ()=> {
+    setVisibleUI(!visibleUI);
   }
   
   return (
     <div className="App">
-      <div className='tag-list'>
+      <button onClick={toggleUI}>{visibleUI? 'Hide Tags':'Select Tags'}</button>
+      <div className={`tag-list ${visibleUI ? 'visible':'hidden'}`}>
         {
           tagList.map((tag, index) => {
             return (
@@ -89,9 +96,9 @@ function App() {
             </div>)
           })
         }  
+        <button onClick={submitHandler}>Submit</button>
       </div>
-      <button onClick={submitHandler}>Submit</button>
-      <Grid urlList={urlList} />
+      <Grid imageList={imageList} />
     </div>
   );
 }

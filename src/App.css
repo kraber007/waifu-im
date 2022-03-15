@@ -1,2 +1,23 @@
 .App {
+    width: 100vw;
+    height: 100vh;
+}
+
+.tag-list{
+    position: fixed;
+    left: 50%;
+    transition: all 0.2s ease-out 0s;
+    background-color: brown;
+    padding: 10px;
+    border-radius: 10px;
+}
+.tag-list.hidden{
+    top: 0%;
+    transform: translateX(-50%) translateY(-100%);
+    opacity: 0;
+}
+.tag-list.visible{
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    opacity: 1;
 }
