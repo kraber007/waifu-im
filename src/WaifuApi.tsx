@@ -37,7 +37,7 @@ export function getAllTags(): Promise<Tag[]>{
 export function getRandomImages(
     selected_tags?: string[],
     excluded_tags?: string[],
-    is_nsfw?: Boolean,
+    is_nsfw = false,
     gif?: Boolean,
     order_by?: "FAVORITES" | "UPLOADED_AT",
     many = true,

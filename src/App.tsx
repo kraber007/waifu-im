@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import './App.css';
 import Grid from './components/Grid';
+import GridStagger from './components/GridStagger';
+import Single from './components/Single';
 import {Image, Tag, getSfwTags, getNsfwTags, getAllTags, getRandomImages} from './WaifuApi';
 
 interface TagIntf{
@@ -65,6 +67,7 @@ function App() {
   
   return (
     <div className="App">
+      <Single urlList={urlList} index={2}/>
       <button onClick={toggleUI}>{visibleUI? 'Hide Tags':'Select Tags'}</button>
       <div className={`tag-list ${visibleUI ? 'visible':'hidden'}`}>
         {
@@ -98,7 +101,7 @@ function App() {
         }  
         <button onClick={submitHandler}>Submit</button>
       </div>
-      <Grid urlList={urlList} />
+      <GridStagger urlList={urlList} />
     </div>
   );
 }

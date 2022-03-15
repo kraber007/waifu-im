@@ -1,0 +1,13 @@
+.stagger-container {
+  position: relative;
+}
+
+.stagger-container > div {
+  position: absolute;
+  padding: 0.5vh 0.5vw;
+  box-sizing: border-box;
+}
+.stagger-container img {
+  width: 100%;
+  border-radius: 10px;
+}

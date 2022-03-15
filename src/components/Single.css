@@ -1,0 +1,13 @@
+.single {
+  z-index: 1;
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.single > img {
+  max-width: 100vw;
+  max-height: 100vh;
+}
