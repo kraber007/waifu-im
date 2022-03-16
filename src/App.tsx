@@ -10,12 +10,15 @@ interface TagIntf{
 }
 
 function App() {
+  let [selectedTags, setSelectedTags] = useState<string[]>([]);
+  let [excludedTags, setExcludedTags] = useState<string[]>([]);
   let [imageList, setImageList] = useState<Image0[]>([]);
   let [tagStates, setTagStates] = useState<TagIntf[]>([]);
   let [tagList, setTagList] = useState<Tag[]>([]);
   let [visibleUI, setVisibleUI] = useState(false);
   let [visibleSingle, setVisibleSingle] = useState(false);
   let [indexSingle, setIndexSingle] = useState(0);
+  // let [freshStart, setFreshStart] = useState(true);
 
   useEffect(()=>{    
     getAllTags().then(tagList => {
@@ -55,13 +58,19 @@ function App() {
         excluded_tags.push(Object.keys(tag)[0]);
       }
     });
-    getRandomImages(selected_tags, excluded_tags)
+    setSelectedTags(selected_tags);
+    setExcludedTags(excluded_tags);
+    console.log(selectedTags);
+  }
+
+  useEffect(()=>{
+    getRandomImages(selectedTags, excludedTags)
     .then(list => {
       let tmpImageList:Image0[] = [];
       list.forEach(image => tmpImageList.push(image));
       setImageList(tmpImageList);
     });
-  }
+  }, [selectedTags, excludedTags]);
 
   const toggleUI = ()=> {      //toggle tag select UI
     setVisibleUI(!visibleUI);
@@ -70,6 +79,16 @@ function App() {
   const handleImageClick = (index: number)=>{
     setIndexSingle(index);
     setVisibleSingle(!visibleSingle);
+    console.log(imageList.length);
+  }
+
+  const handleLoadMore = ()=>{
+    let excluded_files:string[] = [];
+    imageList.forEach(image =>  excluded_files.push(image.file));
+    getRandomImages(selectedTags, excludedTags, excluded_files)
+    .then(list => {
+      setImageList(imageList.concat(list));
+    });
   }
 
   return (
@@ -117,6 +136,7 @@ function App() {
         imageList={imageList}
         handleImageClick={handleImageClick}  
       />
+      <button onClick={handleLoadMore}>Load More</button>
     </div>
   );
 }

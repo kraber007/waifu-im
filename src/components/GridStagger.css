@@ -1,13 +1,17 @@
 .stagger-container {
   position: relative;
+  transition: background 5s ease-out 0.2s;
 }
 
 .stagger-container > div {
   position: absolute;
-  padding: 0.5vh 0.5vw;
+  /* padding: 0.5vh 0.5vw; */
+
   box-sizing: border-box;
+  transform-origin: top left;
+  transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) 0.1s;
 }
 .stagger-container img {
-  width: 100%;
-  border-radius: 10px;
+  width: 97%;
+  border-radius: 3%;
 }

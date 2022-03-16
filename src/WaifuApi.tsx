@@ -37,23 +37,28 @@ export function getAllTags(): Promise<Tag[]>{
 export function getRandomImages(
     selected_tags?: string[],
     excluded_tags?: string[],
-    is_nsfw = false,
+    excluded_files?: string[],
+    is_nsfw?: Boolean,
     gif?: Boolean,
     order_by?: "FAVORITES" | "UPLOADED_AT",
     many = true,
-    excluded_files?: string[]
 ) : Promise<Image0[]>{
     let url = "https://api.waifu.im/random/?";
     selected_tags?.forEach(tag => url += `&selected_tags=${tag}`);
     excluded_tags?.forEach(tag => url += `&excluded_tags=${tag}`);
+    excluded_files?.forEach(file => url += `&excluded_files=${file}`);
     url += "&many=true"
-    return fetch(url)
+    return fetch(url, {mode: 'cors'})
     .then(response => response.json())
     .then(data => {
         if(data.code == 404){
             console.log(`An 404 error occured, message=${data.message}`);
             return [];
         }
-        return data.images
+        return data.images;
+    })
+    .catch(error=>{
+        console.log('Error caught while getRandomImages');
+        return [];
     });
 }

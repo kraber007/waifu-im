@@ -48,14 +48,23 @@ export default function Single(props: Props){
             }
         }, {once: true})
     }
+    let img = []
+    let style = {backgroundColor: `b00b69dd`}
+    if(index == -1){
+        img.push(<img  onTouchStart={(ev)=>handleTouch(ev)}/>);
+    }
+    else{
+        img.push(<img src={props.imageList[index].url} onTouchStart={(ev)=>handleTouch(ev)}/>);
+        style = {backgroundColor: `${props.imageList[index].dominant_color}dd`}
+    }
     return (
         <div
             className={`single ${props.extraClass}`}
-            style={{backgroundColor: `${props.imageList[index].dominant_color}dd`}}
+            style={style}
         >
-            <button id={'closeSingle'} onClick={()=>props.closeSingle(0)}>Close</button>
+            <button id={'closeSingle'} onClick={()=>props.closeSingle(-1)}>Close</button>
             <button id={'leftSingle'} onClick={()=> handleLR(-1)}>{"<"}</button>
-            <img src={props.imageList[index].url} onTouchStart={(ev)=>handleTouch(ev)}/>  
+            {img}  
             <button id={'rightSingle'} onClick={()=> handleLR(+1)}>{">"}</button> 
         </div>
     )
