@@ -18,7 +18,7 @@ function App() {
   let [visibleUI, setVisibleUI] = useState(false);
   let [visibleSingle, setVisibleSingle] = useState(false);
   let [indexSingle, setIndexSingle] = useState(0);
-  // let [freshStart, setFreshStart] = useState(true);
+  let [freshStart, setFreshStart] = useState(true);
 
   useEffect(()=>{    
     getAllTags().then(tagList => {
@@ -60,7 +60,7 @@ function App() {
     });
     setSelectedTags(selected_tags);
     setExcludedTags(excluded_tags);
-    console.log(selectedTags);
+    setFreshStart(true);
   }
 
   useEffect(()=>{
@@ -135,6 +135,8 @@ function App() {
       <GridStagger 
         imageList={imageList}
         handleImageClick={handleImageClick}  
+        freshStart={freshStart}
+        setFreshStart={setFreshStart}
       />
       <button onClick={handleLoadMore}>Load More</button>
     </div>

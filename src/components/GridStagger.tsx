@@ -3,9 +3,10 @@ import { Image0 } from "../WaifuApi";
 import './GridStagger.css'
 
 interface Props{
-    imageList: Image0[]
+    imageList: Image0[],
     handleImageClick(index: number): void,
-    // freshStart: Boolean
+    freshStart: Boolean,
+    setFreshStart: any
 }
 
 interface LoadedImage{
@@ -18,14 +19,22 @@ interface LoadedImage{
 export default function GridStagger(props: Props){
 
     let [loadedImageList, setLoadedImageList] = useState<LoadedImage[]>([]);
-    let [windowWidth, setWindowWidth] = useState(window.innerWidth);
+    let [windowWidth, setWindowWidth] = useState(window.innerWidth-20);
     let [containerHeight, setContainerHeight] = useState(0);
     let [backgroundGradient, setBackgroundGradient] = useState('#b00b69');
+
+    useEffect(()=>{
+        if(!props.freshStart){
+            return;
+        }
+        setLoadedImageList([]);
+        props.setFreshStart(false);
+    },[props.freshStart])
 
     window.onresize = ()=>{
         clearTimeout((window as any).resizeTimeout);
         (window as any).resizeTimeout = setTimeout(function(){
-            setWindowWidth(window.innerWidth-10);
+            setWindowWidth(window.innerWidth-20);
         }, 50)
     }
 
@@ -76,7 +85,7 @@ export default function GridStagger(props: Props){
         }
     }
     function getCC(color: string) :string {
-        let amount = -20;
+        let amount = -50;
         return '#' + color.replace(/^#/, '').replace(/../g, color => ('0'+Math.min(255, Math.max(0, parseInt(color, 16) + amount)).toString(16)).substr(-2)); 
     }
     let minWidth = 300;

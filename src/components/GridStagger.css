@@ -1,6 +1,7 @@
 .stagger-container {
   position: relative;
   transition: background 5s ease-out 0.2s;
+  padding: 10px;
 }
 
 .stagger-container > div {
