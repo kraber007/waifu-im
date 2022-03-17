@@ -111,8 +111,8 @@ export default function GridStagger(props: Props){
                     let scale = width/image.width;
                     if(top - lastTop > 200){
                         gradient += `,${getCC(image.color)} ${top}px`;
+                        lastTop = top;
                     }
-                    lastTop = top;
                     if(index === loadedImageList.length-1){
                         gradient += ')'
                         handleLastImageLoad();
