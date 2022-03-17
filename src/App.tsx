@@ -134,7 +134,7 @@ function App() {
 
   return (
     <div className="App">
-      <Single
+      <SingleSlider
         loadedImageList={loadedImageList} 
         index={indexSingle}
         extraClass={visibleSingle ? 'visible':'hidden'}

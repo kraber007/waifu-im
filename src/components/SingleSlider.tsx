@@ -57,14 +57,23 @@ export default function SingleSlider(props: Props){
     //     img.push(<img src={props.imageList[index].url} onTouchStart={(ev)=>handleTouch(ev)}/>);
     // }
     // ${props.loadedImageList[index].color}
+    // 
     return (
         <div
             className={`single-slider ${props.extraClass}`}
+            onTouchStart={handleTouch}
+            style={{
+                backgroundColor: `${props.loadedImageList[index].color}`,
+            }}
         >
             <button id={'closeSingle'} onClick={()=>props.closeSingle(0)}>Close</button>
-            <button id={'leftSingle'} onClick={()=> handleLR(-1)}>{"<"}</button>
+            <button id={'leftSingle'} onClick={()=> handleLR(-1)}>{"←"}</button>
+            <button id={'rightSingle'} onClick={()=> handleLR(+1)}>{"→"}</button>
+            <div id={'slide-counter'}>{`${index+1}/${props.loadedImageList.length}`}</div>
             <div className='image-row'
-                style={{backgroundColor: '#ccc'}}
+                style={{
+                    transform: `translateX(${-index*100}vw)`
+                }}
             >
                 {
                     props.loadedImageList.map(image => {
@@ -76,7 +85,7 @@ export default function SingleSlider(props: Props){
                     })
                 }
             </div>  
-            <button id={'rightSingle'} onClick={()=> handleLR(+1)}>{">"}</button> 
+             
         </div>
     )
 }
