@@ -55,7 +55,7 @@ export function getRandomImages(
             console.log(`An 404 error occured, message=${data.message}`);
             return [];
         }
-        return data.images;
+        return data.images.slice(0,5);
     })
     .catch(error=>{
         console.log('Error caught while getRandomImages');

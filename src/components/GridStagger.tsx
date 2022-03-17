@@ -1,35 +1,20 @@
 import React, {useState, useEffect} from "react";
 import { Image0 } from "../WaifuApi";
 import './GridStagger.css'
+import {LoadedImage} from '../App'
 
 interface Props{
-    imageList: Image0[],
+    loadedImageList: LoadedImage[],
     handleImageClick(index: number): void,
     freshStart: Boolean,
     setFreshStart: any
 }
 
-interface LoadedImage{
-    url: string,
-    width: number,
-    height: number,
-    color: string
-}
-
 export default function GridStagger(props: Props){
 
-    let [loadedImageList, setLoadedImageList] = useState<LoadedImage[]>([]);
     let [windowWidth, setWindowWidth] = useState(window.innerWidth-20);
     let [containerHeight, setContainerHeight] = useState(0);
     let [backgroundGradient, setBackgroundGradient] = useState('#b00b69');
-
-    useEffect(()=>{
-        if(!props.freshStart){
-            return;
-        }
-        setLoadedImageList([]);
-        props.setFreshStart(false);
-    },[props.freshStart])
 
     window.onresize = ()=>{
         clearTimeout((window as any).resizeTimeout);
@@ -37,23 +22,6 @@ export default function GridStagger(props: Props){
             setWindowWidth(window.innerWidth-20);
         }, 50)
     }
-
-    useEffect(()=>{ 
-        if(loadedImageList.length >= props.imageList.length){
-            return;
-        }
-        let img = new Image();
-        img.onload = ()=> {
-            let tmp = loadedImageList.concat([{
-                url: props.imageList[loadedImageList.length].url,
-                width: img.width,
-                height: img.height,
-                color: props.imageList[loadedImageList.length].dominant_color
-            }])
-            setLoadedImageList(tmp);
-        }
-        img.src = props.imageList[loadedImageList.length].url;
-    }, [loadedImageList, props.imageList]);
 
     const findMinIndex = (arr: number[])=>{
         let i = 0;
@@ -73,8 +41,6 @@ export default function GridStagger(props: Props){
                 last = val;
             }
         })
-        // console.log(arr);
-        // console.log(last);
         return last;
     }
     const handleLastImageLoad = ()=>{
@@ -103,7 +69,7 @@ export default function GridStagger(props: Props){
             style={{height: `${containerHeight}px`, background: backgroundGradient}} 
         >
             {
-                loadedImageList.map((image, index) => {
+                props.loadedImageList.map((image, index) => {
                     let minIndex = findMinIndex(sets);
                     let left = minIndex*width;
                     let top = sets[minIndex];
@@ -113,12 +79,12 @@ export default function GridStagger(props: Props){
                         gradient += `,${getCC(image.color)} ${top}px`;
                         lastTop = top;
                     }
-                    if(index === loadedImageList.length-1){
+                    if(index === props.loadedImageList.length-1){
                         gradient += ')'
                         handleLastImageLoad();
                     }
                     return(
-                        <div 
+                        <div key={image.url}
                             style={{
                                 transform: `translateX(${left}px) translateY(${top}px) scale(${scale},${scale})`,
                                 width: `${image.width}px`
@@ -130,10 +96,6 @@ export default function GridStagger(props: Props){
                     );
                 })
             }  
-            {/* {()=>{
-                
-                return <div></div>
-            }} */}
         </div>
     );
 }

@@ -1,0 +1,37 @@
+.single-slider {
+  z-index: 1;
+  position: absolute;
+  height: 100vh;
+}
+.image-row {
+  display: flex;
+}
+.single-slider.hidden {
+  visibility: hidden;
+}
+.single-slider.visible {
+  visibility: visible;
+}
+#closeSingle {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+}
+#leftSingle {
+  position: absolute;
+  left: 20px;
+}
+#rightSingle {
+  position: absolute;
+  right: 20px;
+}
+.image-row div {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+}
+.image-row img {
+  max-width: 100vw;
+  max-height: 100vh;
+}

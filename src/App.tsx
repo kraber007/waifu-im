@@ -3,22 +3,61 @@ import './App.css';
 import Grid from './components/Grid';
 import GridStagger from './components/GridStagger';
 import Single from './components/Single';
+import SingleSlider from './components/SingleSlider';
 import {Image0, Tag, getSfwTags, getNsfwTags, getAllTags, getRandomImages} from './WaifuApi';
 
 interface TagIntf{
   [key:string] : boolean[]
 }
 
+export interface LoadedImage{
+  url: string,
+  width: number,
+  height: number,
+  color: string
+}
+
 function App() {
   let [selectedTags, setSelectedTags] = useState<string[]>([]);
   let [excludedTags, setExcludedTags] = useState<string[]>([]);
   let [imageList, setImageList] = useState<Image0[]>([]);
+  let [loadedImageList, setLoadedImageList] = useState<LoadedImage[]>([]);
   let [tagStates, setTagStates] = useState<TagIntf[]>([]);
   let [tagList, setTagList] = useState<Tag[]>([]);
   let [visibleUI, setVisibleUI] = useState(false);
   let [visibleSingle, setVisibleSingle] = useState(false);
   let [indexSingle, setIndexSingle] = useState(0);
   let [freshStart, setFreshStart] = useState(true);
+
+  useEffect(()=>{
+    console.log('useEffect called freshStart')
+    console.log(freshStart)
+    if(!freshStart){
+        return;
+    }
+    setLoadedImageList([]);
+    setFreshStart(false);
+  },[freshStart]);
+
+  useEffect(()=>{ 
+    console.log('useEffect called Lists')
+    console.log({loadedImageList, imageList});
+    if(loadedImageList.length >= imageList.length){
+        return;
+    }
+    let img = new Image();
+    img.onload = ()=> {
+        let tmp = loadedImageList.concat([{
+            url: imageList[loadedImageList.length].url,
+            width: img.width,
+            height: img.height,
+            color: imageList[loadedImageList.length].dominant_color
+        }])
+        setLoadedImageList(tmp);
+    }
+    img.src = imageList[loadedImageList.length].url;
+  }, [loadedImageList, imageList]);
+
 
   useEffect(()=>{    
     getAllTags().then(tagList => {
@@ -60,15 +99,17 @@ function App() {
     });
     setSelectedTags(selected_tags);
     setExcludedTags(excluded_tags);
-    setFreshStart(true);
   }
 
   useEffect(()=>{
+    console.log('useEffect called tags');
+    console.log({selectedTags, excludedTags});
     getRandomImages(selectedTags, excludedTags)
     .then(list => {
       let tmpImageList:Image0[] = [];
       list.forEach(image => tmpImageList.push(image));
       setImageList(tmpImageList);
+      setFreshStart(true);
     });
   }, [selectedTags, excludedTags]);
 
@@ -93,8 +134,8 @@ function App() {
 
   return (
     <div className="App">
-      <Single 
-        imageList={imageList} 
+      <Single
+        loadedImageList={loadedImageList} 
         index={indexSingle}
         extraClass={visibleSingle ? 'visible':'hidden'}
         closeSingle={handleImageClick}
@@ -133,7 +174,7 @@ function App() {
         <button onClick={submitHandler}>Submit</button>
       </div>
       <GridStagger 
-        imageList={imageList}
+        loadedImageList={loadedImageList}
         handleImageClick={handleImageClick}  
         freshStart={freshStart}
         setFreshStart={setFreshStart}

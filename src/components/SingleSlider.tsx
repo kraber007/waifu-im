@@ -1,5 +1,5 @@
 import { Image0 } from '../WaifuApi'
-import './Single.css'
+import './SingleSlider.css'
 import React, {useEffect, useState} from 'react';
 import { LoadedImage } from '../App';
 
@@ -10,7 +10,7 @@ interface Props{
     closeSingle(index: number): void
 }
 
-export default function Single(props: Props){
+export default function SingleSlider(props: Props){
 
     let [index, setIndex] = useState(props.index);
 
@@ -49,23 +49,33 @@ export default function Single(props: Props){
             }
         }, {once: true})
     }
-    let img = []
-    let style = {backgroundColor: `b00b69dd`}
-    if(index == -1){
-        img.push(<img  onTouchStart={(ev)=>handleTouch(ev)}/>);
-    }
-    else{
-        img.push(<img src={props.loadedImageList[index].url} onTouchStart={(ev)=>handleTouch(ev)}/>);
-        style = {backgroundColor: `${props.loadedImageList[index].color}dd`}
-    }
+    // let img = []
+    // if(index == -1){
+    //     img.push(<img  onTouchStart={(ev)=>handleTouch(ev)}/>);
+    // }
+    // else{
+    //     img.push(<img src={props.imageList[index].url} onTouchStart={(ev)=>handleTouch(ev)}/>);
+    // }
+    // ${props.loadedImageList[index].color}
     return (
         <div
-            className={`single ${props.extraClass}`}
-            style={style}
+            className={`single-slider ${props.extraClass}`}
         >
-            <button id={'closeSingle'} onClick={()=>props.closeSingle(-1)}>Close</button>
+            <button id={'closeSingle'} onClick={()=>props.closeSingle(0)}>Close</button>
             <button id={'leftSingle'} onClick={()=> handleLR(-1)}>{"<"}</button>
-            {img}  
+            <div className='image-row'
+                style={{backgroundColor: '#ccc'}}
+            >
+                {
+                    props.loadedImageList.map(image => {
+                        return (
+                            <div className='image'>
+                                <img src={image.url} />    
+                            </div>
+                        )
+                    })
+                }
+            </div>  
             <button id={'rightSingle'} onClick={()=> handleLR(+1)}>{">"}</button> 
         </div>
     )
