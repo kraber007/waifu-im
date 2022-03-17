@@ -61,3 +61,11 @@
   left: 50%;
   transform: translate(-50%, -50%);
 }
+.single-load-more {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.single-load-more button {
+  font-size: 10vw;
+}

@@ -97,8 +97,12 @@ function App() {
         excluded_tags.push(Object.keys(tag)[0]);
       }
     });
-    setSelectedTags(selected_tags);
-    setExcludedTags(excluded_tags);
+    if(JSON.stringify(selectedTags) != JSON.stringify(selected_tags) ||
+       JSON.stringify(excludedTags) != JSON.stringify(excluded_tags)   )
+    {
+      setSelectedTags(selected_tags);
+      setExcludedTags(excluded_tags);
+    }
   }
 
   useEffect(()=>{
@@ -119,8 +123,20 @@ function App() {
   
   const handleImageClick = (index: number)=>{
     setIndexSingle(index);
-    setVisibleSingle(!visibleSingle);
-    console.log(imageList.length);
+    setVisibleSingle(true);
+  }
+
+  useEffect(()=>{
+    if(visibleSingle){
+      document.getElementsByClassName('single-slider')[0].requestFullscreen();
+    }
+    else{
+      document.exitFullscreen();
+    }
+  },[visibleSingle])
+
+  const handleCloseSingle = ()=>{
+    setVisibleSingle(false);
   }
 
   const handleLoadMore = ()=>{
@@ -138,7 +154,8 @@ function App() {
         loadedImageList={loadedImageList} 
         index={indexSingle}
         extraClass={visibleSingle ? 'visible':'hidden'}
-        closeSingle={handleImageClick}
+        closeSingle={handleCloseSingle}
+        handleLoadMore={handleLoadMore}
       />
       <button onClick={toggleUI}>{visibleUI? 'Hide Tags':'Select Tags'}</button>
       <div className={`tag-list ${visibleUI ? 'visible':'hidden'}`}>
