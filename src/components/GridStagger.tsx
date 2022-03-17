@@ -7,14 +7,15 @@ interface Props{
     loadedImageList: LoadedImage[],
     handleImageClick(index: number): void,
     freshStart: Boolean,
-    setFreshStart: any
+    setFreshStart: any,
+    setFooterColor: any,
 }
 
 export default function GridStagger(props: Props){
 
     let [windowWidth, setWindowWidth] = useState(window.innerWidth-20);
     let [containerHeight, setContainerHeight] = useState(0);
-    let [backgroundGradient, setBackgroundGradient] = useState('#b00b69');
+    let [backgroundGradient, setBackgroundGradient] = useState('#062C30');
 
     window.onresize = ()=>{
         clearTimeout((window as any).resizeTimeout);
@@ -48,11 +49,8 @@ export default function GridStagger(props: Props){
         if(height != containerHeight){
             setContainerHeight(height);
             setBackgroundGradient(gradient);
+            console.log(gradient);
         }
-    }
-    function getCC(color: string) :string {
-        let amount = -50;
-        return '#' + color.replace(/^#/, '').replace(/../g, color => ('0'+Math.min(255, Math.max(0, parseInt(color, 16) + amount)).toString(16)).substr(-2)); 
     }
     let minWidth = 300;
     let numColoumns = Math.floor(windowWidth/minWidth); 
@@ -76,10 +74,14 @@ export default function GridStagger(props: Props){
                     sets[minIndex] += (image.height/image.width)*width;
                     let scale = width/image.width;
                     if(top - lastTop > 200){
-                        gradient += `,${getCC(image.color)} ${top}px`;
+                        gradient += `,${(image.color)} ${top}px`;
                         lastTop = top;
+                        props.setFooterColor(image.color);
                     }
                     if(index === props.loadedImageList.length-1){
+                        if(top == 0){
+                            gradient += `,${(props.loadedImageList[0].color)} ${1}px`;
+                        }
                         gradient += ')'
                         handleLastImageLoad();
                     }

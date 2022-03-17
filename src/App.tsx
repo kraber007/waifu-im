@@ -28,6 +28,8 @@ function App() {
   let [visibleSingle, setVisibleSingle] = useState(false);
   let [indexSingle, setIndexSingle] = useState(0);
   let [freshStart, setFreshStart] = useState(true);
+  let [headerColor, setHeaderColor] = useState("062C30");
+  let [footerColor, setFooterColor] = useState("062C30");
 
   useEffect(()=>{
     console.log('useEffect called freshStart')
@@ -44,6 +46,9 @@ function App() {
     console.log({loadedImageList, imageList});
     if(loadedImageList.length >= imageList.length){
         return;
+    }
+    if(loadedImageList.length > 0){
+      setHeaderColor(loadedImageList[0].color);
     }
     let img = new Image();
     img.onload = ()=> {
@@ -149,7 +154,7 @@ function App() {
   }
 
   return (
-    <div className="App">
+    <div className="App" style={{backgroundColor: footerColor}}>
       <SingleSlider
         loadedImageList={loadedImageList} 
         index={indexSingle}
@@ -157,8 +162,11 @@ function App() {
         closeSingle={handleCloseSingle}
         handleLoadMore={handleLoadMore}
       />
-      <button onClick={toggleUI}>{visibleUI? 'Hide Tags':'Select Tags'}</button>
+      <div style={{textAlign: 'center', padding: "10px", backgroundColor: headerColor}}>
+        <button onClick={toggleUI}>{visibleUI? 'Hide Tags':'Select Tags'}</button>
+      </div>
       <div className={`tag-list ${visibleUI ? 'visible':'hidden'}`}>
+        {"Include, Optional, Exclude : Tag Name"}
         {
           tagList.map((tag, index) => {
             return (
@@ -195,8 +203,15 @@ function App() {
         handleImageClick={handleImageClick}  
         freshStart={freshStart}
         setFreshStart={setFreshStart}
+        setFooterColor={setFooterColor}
       />
-      <button onClick={handleLoadMore}>Load More</button>
+      <div style={{
+        textAlign: 'center', 
+        padding: "10px", 
+        backgroundColor: footerColor,
+      }}>
+        <button onClick={handleLoadMore}>Load More</button>
+      </div>
     </div>
   );
 }
