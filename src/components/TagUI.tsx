@@ -1,11 +1,7 @@
 import './TagUI.css'
 import { useEffect, useState } from "react";
 import { Tags } from "../App";
-import { getAllTags, Tag } from "../WaifuApi";
-
-interface TagIntf{
-    [key:string] : boolean[]
-}
+import {getAllTags, Tag } from "../WaifuApi";
 
 interface Props{
     visibleUI: Boolean,
@@ -15,46 +11,41 @@ interface Props{
 }
 
 export default function TagUI(props: Props){
-    let [tagStates, setTagStates] = useState<TagIntf[]>([]);
-    let [tagList, setTagList] = useState<Tag[]>([]);          //list of all possible tags
+    let [tagStates, setTagStates] = useState<number[]>([]);
+    let [allTags, setAllTags] = useState<Tag[]>([])
     let [isNsfw, setIsNsfw] = useState(false);
 
     useEffect(()=>{    
-        getAllTags().then(tagList => {
-          let tmpTagStates: TagIntf[] = [];
-          let tmpTagList: Tag[] = [];
-          tagList.forEach(tag => {
-            let tmp:TagIntf = {};
-            tmp[tag.name] = [false, true, false];
-            tmpTagStates.push(tmp);
-            tmpTagList.push(tag);
-          });
-          setTagStates(tmpTagStates);
-          setTagList(tmpTagList);
+        getAllTags().then(list =>{
+            let tmpTagStates: number[] = [];
+            let tmpAllTags: Tag[] = [];
+            list.forEach(tag => {
+                tmpTagStates.push(1);
+                tmpAllTags.push(tag);
+            })
+            setAllTags(tmpAllTags);
+            setTagStates(tmpTagStates);
         });
-    },[])
+    },[]);
 
     const onTagChangeHandler = (e:any) =>{
-    let tmpTagStates = tagStates.concat([]);
-    tmpTagStates.forEach(tag => {
-        if(tag[e.target.name]){
-        tag[e.target.name] = [false, false, false];
-        tag[e.target.name][e.target.id.charAt(0)] = true;
-        }
-    });
-    setTagStates(tmpTagStates);
+        console.log(e.target.dataset.index);
+        let tmpTagStates = tagStates.concat([]);
+        tmpTagStates[e.target.dataset.index] = e.target.valueAsNumber;
+        setTagStates(tmpTagStates);
     }
 
     const submitHandler = ()=> {
         props.setVisibleUI(false);
         let selected_tags: string[] = [];
         let excluded_tags: string[] = [];
-        tagStates.forEach(tag => {
-            if(tag[Object.keys(tag)[0]][0]){
-                selected_tags.push(Object.keys(tag)[0]);
+        tagStates.forEach((state, index) => {
+            console.log(state, index)
+            if(state===2){
+                selected_tags.push(allTags[index].name);
             }
-            if(tag[Object.keys(tag)[0]][2]){
-                excluded_tags.push(Object.keys(tag)[0]);
+            if(state===0){
+                excluded_tags.push(allTags[index].name);
             }
         });
         let tmpTags = {selected: selected_tags, excluded: excluded_tags}
@@ -64,44 +55,37 @@ export default function TagUI(props: Props){
     }
 
     const toggleNsfw = ()=>{
-        console.log('toggle called')
         setIsNsfw(!isNsfw);
     }
 
     return (
-    <div className={`tag-list ${props.visibleUI ? 'visible':'hidden'}`}>
-        {"Include, Optional, Exclude : Tag Name"}
-        {
-          tagList.map((tag, index) => {
-            return (
-            <div className='tag'>
-              <input 
-                type='radio'
-                id={`0-include-${tag.name}`} 
-                name={tag.name} 
-                checked={tagStates[index][tag.name][0]} 
-                onChange={onTagChangeHandler}
-              />
-              <input 
-                type='radio'
-                id={`1-nothing-${tag.name}`} 
-                name={tag.name} 
-                checked={tagStates[index][tag.name][1]} 
-                onChange={onTagChangeHandler}
-              />
-              <input 
-                type='radio'
-                id={`2-exclude-${tag.name}`} 
-                name={tag.name} 
-                checked={tagStates[index][tag.name][2]} 
-                onChange={onTagChangeHandler}
-              />
-              {tag.name}
-            </div>)
-          })
-        }  
-        {/* <input type='range' min={0} max={2}></input> */}
-        <button onClick={submitHandler}>Submit</button>
+    <div className={`tag-ui ${props.visibleUI ? 'visible':'hidden'}`}>
+        <div className='tag-ui-header'>
+            {"Excluded, optional or Included Tags"}    
+        </div>
+        <div className='tag-list'>
+            {
+            allTags.map((tag, index) => {
+                return (
+                <div className='tag'>
+                    <input 
+                        type='range'
+                        id={tag.name}
+                        name={tag.name}
+                        data-index={index}
+                        min={0}
+                        max={2}
+                        value={tagStates[index]}
+                        onChange={onTagChangeHandler}
+                    />   
+                    <label htmlFor={tag.name}>
+                        {tag.name}
+                    </label>     
+                </div>)
+            })
+            }  
+            <button onClick={submitHandler}>Submit</button>
+        </div>       
     </div>
     );
 }

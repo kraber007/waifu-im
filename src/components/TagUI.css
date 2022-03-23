@@ -1,4 +1,8 @@
-.tag-list {
+.tag-ui {
+  width: min(300px, 90vw);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   position: fixed;
   left: 50%;
   transition: all 0.2s ease-out 0s;
@@ -7,13 +11,24 @@
   border-radius: 10px;
   z-index: 2;
 }
-.tag-list.hidden {
+.tag-ui.hidden {
   top: 0%;
   transform: translateX(-50%) translateY(-100%);
   opacity: 0;
 }
-.tag-list.visible {
+.tag-ui.visible {
   top: 50%;
   transform: translateX(-50%) translateY(-50%);
   opacity: 1;
+}
+.tag {
+  display: flex;
+  margin: 5px;
+  gap: 5px;
+}
+input[type="range"] {
+  width: 70px;
+}
+.tag-list button {
+  width: 100%;
 }

@@ -28,10 +28,10 @@ export function getSfwTags(): Promise<Tag[]>{
     return getTags().then((data:any) => data.versatile); 
 }
 export function getNsfwTags(): Promise<Tag[]>{
-    return getTags().then((data:any) => data.nsfw)
+    return getTags().then((data:any) => data.nsfw);
 }
 export function getAllTags(): Promise<Tag[]>{
-    return getTags().then((data:any) => data.versatile.concat(data.nsfw))
+    return getTags().then((data:any) => data.versatile.concat(data.nsfw));
 }
 
 export function getRandomImages(
