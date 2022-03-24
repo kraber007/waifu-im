@@ -1,3 +1,5 @@
 .App {
+  /* min-height for covering background-color */
+  min-height: 100vh;
   z-index: 1;
 }

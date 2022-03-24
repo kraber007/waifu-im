@@ -76,8 +76,7 @@ export default function GridStagger(props: Props){
                     if(top - lastTop > 200){
                         gradient += `,${(image.color)} ${top}px`;
                         lastTop = top;
-                        console.log('calling footer color set')
-                        // setTimeout(()=>props.setFooterColor(image.color), 0);
+                        props.setFooterColor(image.color);
                     }
                     if(index === props.loadedImageList.length-1){
                         if(top == 0){

@@ -16,7 +16,7 @@ interface Props{
     handleLoadMore(): void
 }
 
-export default function SingleSlider(props: Props){
+export default function SingleSwiper(props: Props){
 
     let [index, setIndex] = useState(props.index);
     let [swiperIndex, setSwiperIndex] = useState(props.index);
@@ -54,7 +54,7 @@ export default function SingleSlider(props: Props){
                     props.loadedImageList.map((image, index) => {
                         return (
                             <SwiperSlide
-                                // key={image.url}
+                                key={index+image.url}
                                 // virtualIndex={index}    
                             >
                                 <div className='slide-div'>

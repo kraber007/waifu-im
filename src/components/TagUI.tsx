@@ -67,7 +67,7 @@ export default function TagUI(props: Props){
             {
             allTags.map((tag, index) => {
                 return (
-                <div className='tag'>
+                <div className='tag' key={tag.name}>
                     <input 
                         type='range'
                         id={tag.name}
