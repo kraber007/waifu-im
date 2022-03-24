@@ -1,7 +1,7 @@
 .single-swiper {
   position: sticky;
   top: 0px;
-  z-index: 2;
+  z-index: 3;
   transition: background-color 400ms ease 0s;
 }
 
@@ -21,7 +21,7 @@
   position: absolute;
   right: 15px;
   top: 10px;
-  z-index: 3;
+  z-index: 4;
 }
 
 .swiper-pagination-fraction {
