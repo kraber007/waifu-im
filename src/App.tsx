@@ -3,7 +3,7 @@ import './App.css';
 // import Grid from './components/Grid';
 import GridStagger from './components/GridStagger';
 // import Single from './components/Single';
-import SingleSlider from './components/SingleSlider';
+import SingleSwiper from './components/SingleSwiper';
 import TagUI from './components/TagUI';
 import {Image0, Tag, getSfwTags, getNsfwTags, getAllTags, getRandomImages} from './WaifuApi';
 
@@ -31,8 +31,8 @@ function App() {
   let [footerColor, setFooterColor] = useState("062C30");
 
   useEffect(()=>{
-    console.log('useEffect called freshStart')
-    console.log(freshStart)
+    // console.log('useEffect called freshStart')
+    // console.log(freshStart)
     if(!freshStart){
         return;
     }
@@ -41,8 +41,8 @@ function App() {
   },[freshStart]);
 
   useEffect(()=>{ 
-    console.log('useEffect called Lists')
-    console.log({loadedImageList, imageList});
+    // console.log('useEffect called Lists')
+    // console.log({loadedImageList, imageList});
     if(loadedImageList.length >= imageList.length){
         return;
     }
@@ -63,8 +63,8 @@ function App() {
   }, [loadedImageList, imageList]);
 
   useEffect(()=>{
-    console.log('useEffect called tags');
-    console.log({tags});
+    // console.log('useEffect called tags');
+    // console.log({tags});
     getRandomImages(tags.selected, tags.excluded)
     .then(list => {
       let tmpImageList:Image0[] = [];
@@ -83,14 +83,14 @@ function App() {
     setVisibleSingle(true);
   }
 
-  useEffect(()=>{
-    if(visibleSingle){
-      document.getElementsByClassName('single-slider')[0].requestFullscreen();
-    }
-    else{
-      document.exitFullscreen();
-    }
-  },[visibleSingle])
+  // useEffect(()=>{
+  //   if(visibleSingle){
+  //     document.getElementsByClassName('single-slider')[0].requestFullscreen();
+  //   }
+  //   else{
+  //     document.exitFullscreen();
+  //   }
+  // },[visibleSingle])
 
   const handleCloseSingle = ()=>{
     setVisibleSingle(false);
@@ -107,36 +107,38 @@ function App() {
 
   return (
     <div className="App" style={{backgroundColor: footerColor}}>
-      <SingleSlider
+      <SingleSwiper
         loadedImageList={loadedImageList} 
         index={indexSingle}
-        extraClass={visibleSingle ? 'visible':'hidden'}
+        visibleSingle={visibleSingle}
         closeSingle={handleCloseSingle}
         handleLoadMore={handleLoadMore}
       />
-      <div style={{textAlign: 'center', padding: "10px", backgroundColor: headerColor}}>
-        <button onClick={toggleUI}>{visibleUI? 'Hide Tags':'Select Tags'}</button>
-      </div>
-      <TagUI 
-        visibleUI={visibleUI}
-        setVisibleUI={setVisibleUI}
-        tags={tags}
-        setTags={setTags}
-      />
-      <GridStagger 
-        loadedImageList={loadedImageList}
-        handleImageClick={handleImageClick}  
-        freshStart={freshStart}
-        setFreshStart={setFreshStart}
-        setFooterColor={setFooterColor}
-      />
-      <div style={{
-        textAlign: 'center', 
-        padding: "10px", 
-        backgroundColor: footerColor,
-      }}>
-        <button onClick={handleLoadMore}>Load More</button>
-      </div>
+      {/* <div style={{visibility: `${visibleSingle? 'hidden':'visible'}`}}> */}
+        <div style={{textAlign: 'center', padding: "10px", backgroundColor: headerColor}}>
+          <button onClick={toggleUI}>{visibleUI? 'Hide Tags':'Select Tags'}</button>
+        </div>
+        <TagUI 
+          visibleUI={visibleUI}
+          setVisibleUI={setVisibleUI}
+          tags={tags}
+          setTags={setTags}
+        />
+        <GridStagger 
+          loadedImageList={loadedImageList}
+          handleImageClick={handleImageClick}  
+          freshStart={freshStart}
+          setFreshStart={setFreshStart}
+          setFooterColor={setFooterColor}
+        />
+        <div style={{
+          textAlign: 'center', 
+          padding: "10px", 
+          backgroundColor: footerColor,
+        }}>
+          <button onClick={handleLoadMore}>Load More</button>
+        </div>
+      {/* </div> */}
     </div>
   );
 }

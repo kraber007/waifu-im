@@ -49,7 +49,7 @@ export default function GridStagger(props: Props){
         if(height != containerHeight){
             setContainerHeight(height);
             setBackgroundGradient(gradient);
-            console.log(gradient);
+            // console.log(gradient);
         }
     }
     let minWidth = 300;
@@ -76,7 +76,8 @@ export default function GridStagger(props: Props){
                     if(top - lastTop > 200){
                         gradient += `,${(image.color)} ${top}px`;
                         lastTop = top;
-                        props.setFooterColor(image.color);
+                        console.log('calling footer color set')
+                        // setTimeout(()=>props.setFooterColor(image.color), 0);
                     }
                     if(index === props.loadedImageList.length-1){
                         if(top == 0){

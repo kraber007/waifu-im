@@ -20,12 +20,12 @@ export default function SingleSlider(props: Props){
     },[props.index]);
 
     if(props.loadedImageList.length < index){
-        console.log("Single have less length ImageList");
+        // console.log("Single have less length ImageList");
         return <div></div>
     }
     const handleLR = (delta: number)=>{
         if(index+delta<0 || index+delta>props.loadedImageList.length){
-            console.log('end of the list')
+            // console.log('end of the list')
             return;
         }
         setIndex(index+delta);
@@ -37,9 +37,9 @@ export default function SingleSlider(props: Props){
         }
         let x1= ev.changedTouches[0].pageX;
         let y1= ev.changedTouches[0].pageY;
-        console.log(ev);
+        // console.log(ev);
         ev.target.addEventListener('touchend', (ev2:any)=>{
-            console.log(ev2);
+            // console.log(ev2);
             let x2= ev2.changedTouches[0].pageX;
             let y2= ev2.changedTouches[0].pageY;
             if(x2-x1 > 30){

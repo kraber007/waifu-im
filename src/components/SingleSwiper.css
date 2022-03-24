@@ -1,0 +1,36 @@
+.single-swiper {
+  position: sticky;
+  top: 0px;
+  z-index: 2;
+  transition: background-color 400ms ease 0s;
+}
+
+.slide-div {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.swiper-slide img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+#close-single {
+  position: absolute;
+  right: 15px;
+  top: 10px;
+  z-index: 3;
+}
+
+.swiper-pagination-fraction {
+  top: 10px;
+  left: 10px !important;
+  width: fit-content !important;
+}
+.swiper-button-next,
+.swiper-button-prev {
+  top: auto !important;
+  bottom: 15px !important;
+}

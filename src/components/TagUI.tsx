@@ -29,7 +29,7 @@ export default function TagUI(props: Props){
     },[]);
 
     const onTagChangeHandler = (e:any) =>{
-        console.log(e.target.dataset.index);
+        // console.log(e.target.dataset.index);
         let tmpTagStates = tagStates.concat([]);
         tmpTagStates[e.target.dataset.index] = e.target.valueAsNumber;
         setTagStates(tmpTagStates);
@@ -40,7 +40,7 @@ export default function TagUI(props: Props){
         let selected_tags: string[] = [];
         let excluded_tags: string[] = [];
         tagStates.forEach((state, index) => {
-            console.log(state, index)
+            // console.log(state, index)
             if(state===2){
                 selected_tags.push(allTags[index].name);
             }

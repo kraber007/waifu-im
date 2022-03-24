@@ -17,11 +17,11 @@ export default function Grid(props: Props){
     let [loadedImageList, setLoadedImageList] = useState<LoadedImage[]>([]);
 
     useEffect(()=>{
-        console.log('useEffect called') 
+        // console.log('useEffect called') 
         if(loadedImageList.length >= props.imageList.length){
             return;
         }
-        console.log(loadedImageList);
+        // console.log(loadedImageList);
         let img = new Image();
         img.onload = ()=> {
             let tmp = loadedImageList.concat([{
