@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import './App.css';
+import { initialBackgroundColor } from './colors';
 // import Grid from './components/Grid';
 import GridStagger from './components/GridStagger';
 // import Single from './components/Single';
@@ -27,9 +28,8 @@ function App() {
   let [visibleSingle, setVisibleSingle] = useState(false);
   let [indexSingle, setIndexSingle] = useState(0);
   let [freshStart, setFreshStart] = useState(true);
-  let [headerColor, setHeaderColor] = useState("062C30");
-  let [footerColor, setFooterColor] = useState("062C30");
-
+  let [headerColor, setHeaderColor] = useState(initialBackgroundColor);
+  let [footerColor, setFooterColor] = useState(initialBackgroundColor);
   useEffect(()=>{
     // console.log('useEffect called freshStart')
     // console.log(freshStart)
@@ -136,8 +136,14 @@ function App() {
           textAlign: 'center', 
           padding: "10px", 
           backgroundColor: footerColor,
+          display: 'flex',
+          justifyContent: 'center'
         }}>
-          <button id='btn-load-more' onClick={handleLoadMore}>Load More</button>
+          {
+            loadedImageList.length < imageList.length || imageList.length==0 ?
+            <div className='loading-icon app-loading'></div>:
+            <button id='btn-load-more' onClick={handleLoadMore}>Load More</button>
+          } 
         </div>
       {/* </div> */}
     </div>

@@ -25,3 +25,9 @@
 #btn-load-more:hover {
   transform: scale(1.2);
 }
+
+.loading-icon.app-loading {
+  width: 30px;
+  height: 30px;
+  border-width: 5px;
+}

@@ -66,9 +66,11 @@ export default function SingleSwiper(props: Props){
                 }
                 <SwiperSlide>
                     <div className='single-last slide-div'>
-                        {true || props.loadedImageList.length < props.numAllImages ?
-                        <div id='single-loading-text'></div>:
-                        <button id='single-load-more' onClick={props.handleLoadMore}>Load more</button>}    
+                        {
+                            props.loadedImageList.length < props.numAllImages ?
+                            <div className='loading-icon single-loading'></div>:
+                            <button id='single-load-more' onClick={props.handleLoadMore}>Load more</button>
+                        }    
                     </div>
                 </SwiperSlide>
             </Swiper>

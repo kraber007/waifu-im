@@ -2,6 +2,7 @@ import React, {useState, useEffect} from "react";
 import { Image0 } from "../WaifuApi";
 import './GridStagger.css'
 import {LoadedImage} from '../App'
+import { initialBackgroundColor } from "../colors";
 
 interface Props{
     loadedImageList: LoadedImage[],
@@ -15,7 +16,7 @@ export default function GridStagger(props: Props){
 
     let [windowWidth, setWindowWidth] = useState(window.innerWidth-20);
     let [containerHeight, setContainerHeight] = useState(0);
-    let [backgroundGradient, setBackgroundGradient] = useState('#062C30');
+    let [backgroundGradient, setBackgroundGradient] = useState(initialBackgroundColor);
 
     window.onresize = ()=>{
         clearTimeout((window as any).resizeTimeout);

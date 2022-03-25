@@ -63,7 +63,10 @@ export default function TagUI(props: Props){
         <div className='tag-ui-header'>
             {"Excluded, optional or Included Tags"}    
         </div>
-        <div className='tag-list'>
+        {
+            allTags.length ===0?
+            <div className='loading-icon app-loading'></div>:
+            <div className='tag-list'>
             {
             allTags.map((tag, index) => {
                 return (
@@ -85,7 +88,8 @@ export default function TagUI(props: Props){
             })
             }  
             <button onClick={submitHandler}>Submit</button>
-        </div>       
+        </div>
+        }
     </div>
     );
 }

@@ -81,7 +81,7 @@
 #close-single:hover {
   transform: scale(1.2);
 }
-#single-loading-text {
+.loading-icon {
   border: 16px solid #eee; /* Light grey */
   border-top: 16px solid #f4a261; /* Blue */
   border-radius: 50%;
