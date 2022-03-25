@@ -28,6 +28,7 @@
   top: 10px;
   left: 10px !important;
   width: fit-content !important;
+  z-index: 9 !important;
 }
 .swiper-button-next,
 .swiper-button-prev {
