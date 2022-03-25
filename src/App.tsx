@@ -113,10 +113,11 @@ function App() {
         visibleSingle={visibleSingle}
         closeSingle={handleCloseSingle}
         handleLoadMore={handleLoadMore}
+        numAllImages={imageList.length}
       />
       {/* <div style={{visibility: `${visibleSingle? 'hidden':'visible'}`}}> */}
         <div style={{textAlign: 'center', padding: "10px", backgroundColor: headerColor}}>
-          <button onClick={toggleUI}>{visibleUI? 'Hide Tags':'Select Tags'}</button>
+          <button id='btn-select-tags' onClick={toggleUI}>{visibleUI? 'Hide Tags':'Select Tags'}</button>
         </div>
         <TagUI 
           visibleUI={visibleUI}
@@ -136,7 +137,7 @@ function App() {
           padding: "10px", 
           backgroundColor: footerColor,
         }}>
-          <button onClick={handleLoadMore}>Load More</button>
+          <button id='btn-load-more' onClick={handleLoadMore}>Load More</button>
         </div>
       {/* </div> */}
     </div>

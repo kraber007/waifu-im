@@ -1,9 +1,8 @@
-import { Image0 } from '../WaifuApi'
 import './SingleSwiper.css'
 import React, {useEffect, useState} from 'react';
 import { LoadedImage } from '../App';
 import {Swiper, SwiperSlide} from 'swiper/react'
-import { Pagination, Navigation } from 'swiper';
+import { Pagination, Navigation, Virtual} from 'swiper';
 import 'swiper/css'
 import 'swiper/css/pagination'
 import 'swiper/css/navigation'
@@ -13,7 +12,8 @@ interface Props{
     index: number,
     visibleSingle: boolean,
     closeSingle(index: number): void,
-    handleLoadMore(): void
+    handleLoadMore(): void,
+    numAllImages: number
 }
 
 export default function SingleSwiper(props: Props){
@@ -46,16 +46,16 @@ export default function SingleSwiper(props: Props){
                 navigation={true}
                 grabCursor={true}
                 pagination={{type: 'fraction', clickable: true}}
-                modules={[Pagination, Navigation]}
+                modules={[Pagination, Navigation, Virtual]}
                 onSlideChange={handleSlideChange}
-                // virtual
+                virtual={{addSlidesAfter: 3, addSlidesBefore: 2}}
             >
                 {
                     props.loadedImageList.map((image, index) => {
                         return (
                             <SwiperSlide
                                 key={index+image.url}
-                                // virtualIndex={index}    
+                                virtualIndex={index}    
                             >
                                 <div className='slide-div'>
                                     <img src={image.url} />    
@@ -65,8 +65,10 @@ export default function SingleSwiper(props: Props){
                     })
                 }
                 <SwiperSlide>
-                    <div className='single-load-more slide-div'>
-                        <button onClick={props.handleLoadMore}>Load more</button>    
+                    <div className='single-last slide-div'>
+                        {true || props.loadedImageList.length < props.numAllImages ?
+                        <div id='single-loading-text'></div>:
+                        <button id='single-load-more' onClick={props.handleLoadMore}>Load more</button>}    
                     </div>
                 </SwiperSlide>
             </Swiper>

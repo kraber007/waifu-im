@@ -3,3 +3,25 @@
   min-height: 100vh;
   z-index: 1;
 }
+
+#btn-select-tags,
+#btn-load-more {
+  padding: 5px 20px;
+  background-color: #e76f51;
+  border: none;
+  border-radius: 10px;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: bold;
+  box-shadow: 0 3px 10px #2a9d8f55;
+  transition: background-color 200ms ease 0s, transform 200ms ease 30ms;
+}
+#btn-select-tags:active,
+#btn-load-more:active {
+  background-color: #f4a261;
+}
+
+#btn-select-tags:hover,
+#btn-load-more:hover {
+  transform: scale(1.2);
+}

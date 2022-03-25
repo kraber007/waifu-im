@@ -6,7 +6,8 @@
   position: fixed;
   left: 50%;
   transition: all 0.2s ease-out 0s;
-  background-color: brown;
+  background-color: #264653;
+  color: #ffffff;
   padding: 10px;
   border-radius: 10px;
   z-index: 2;
@@ -30,5 +31,21 @@ input[type="range"] {
   width: 70px;
 }
 .tag-list button {
+  margin: 10px 0px;
+  padding: 5px 0px;
   width: 100%;
+  background-color: #e76f51;
+  border: none;
+  border-radius: 10px;
+  color: #ffffff;
+  font-size: 20px;
+  font-weight: bold;
+  box-shadow: 0 3px 10px #2a9d8f55;
+  transition: background-color 200ms ease 0s, transform 200ms ease 30ms;
+}
+.tag-list button:active {
+  background-color: #f4a261;
+}
+.tag-list button:hover {
+  transform: scale(1.1);
 }
