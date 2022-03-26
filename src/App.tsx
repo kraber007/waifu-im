@@ -22,6 +22,7 @@ export interface Tags{
 
 function App() {
   let [tags, setTags] = useState<Tags>({selected: [], excluded: []})
+  let [isNsfw, setIsNsfw] = useState(0); //possible values 0,1,2
   let [imageList, setImageList] = useState<Image0[]>([]);
   let [loadedImageList, setLoadedImageList] = useState<LoadedImage[]>([]);
   let [visibleUI, setVisibleUI] = useState(false);
@@ -65,14 +66,14 @@ function App() {
   useEffect(()=>{
     // console.log('useEffect called tags');
     // console.log({tags});
-    getRandomImages(tags.selected, tags.excluded)
+    getRandomImages(tags.selected, tags.excluded, [], isNsfw)
     .then(list => {
       let tmpImageList:Image0[] = [];
       list.forEach(image => tmpImageList.push(image));
       setImageList(tmpImageList);
       setFreshStart(true);
     });
-  }, [tags]);
+  }, [tags, isNsfw]);
 
   const toggleUI = ()=> {      //toggle tag select UI
     setVisibleUI(!visibleUI);
@@ -97,9 +98,8 @@ function App() {
   }
 
   const handleLoadMore = ()=>{
-    let excluded_files:string[] = [];
-    imageList.forEach(image =>  excluded_files.push(image.file));
-    getRandomImages(tags.selected, tags.excluded, excluded_files)
+    let excluded_files = imageList.map(image => image.file);
+    getRandomImages(tags.selected, tags.excluded, excluded_files, isNsfw)
     .then(list => {
       setImageList(imageList.concat(list));
     });
@@ -124,6 +124,8 @@ function App() {
           setVisibleUI={setVisibleUI}
           tags={tags}
           setTags={setTags}
+          isNsfw={isNsfw}
+          setIsNsfw={setIsNsfw}
         />
         <GridStagger 
           loadedImageList={loadedImageList}

@@ -1,5 +1,7 @@
 .tag-ui {
   width: min(300px, 90vw);
+  max-height: 90vh;
+  overflow: auto;
   display: flex;
   flex-direction: column;
   align-items: center;

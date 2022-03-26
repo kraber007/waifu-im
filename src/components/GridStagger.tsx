@@ -87,7 +87,7 @@ export default function GridStagger(props: Props){
                         handleLastImageLoad();
                     }
                     return(
-                        <div key={image.url}
+                        <div key={index+image.url}
                             style={{
                                 transform: `translateX(${left}px) translateY(${top}px) scale(${scale},${scale})`,
                                 width: `${image.width}px`
