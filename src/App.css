@@ -1,6 +1,7 @@
 .App {
   /* min-height for covering background-color */
   min-height: 100vh;
+  overflow-x: hidden;
   z-index: 1;
 }
 

@@ -14,7 +14,7 @@ interface Props{
 
 export default function GridStagger(props: Props){
 
-    let [windowWidth, setWindowWidth] = useState(window.innerWidth-20);
+    let [windowWidth, setWindowWidth] = useState(window.innerWidth-29);
     let [containerHeight, setContainerHeight] = useState(0);
     let [backgroundGradient, setBackgroundGradient] = useState(initialBackgroundColor);
 

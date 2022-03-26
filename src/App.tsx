@@ -70,8 +70,8 @@ function App() {
     .then(list => {
       let tmpImageList:Image0[] = [];
       list.forEach(image => tmpImageList.push(image));
-      setImageList(tmpImageList);
-      setFreshStart(true);
+      setTimeout(()=>setImageList(tmpImageList),0);
+      setTimeout(()=>setFreshStart(true),0)
     });
   }, [tags, isNsfw]);
 
