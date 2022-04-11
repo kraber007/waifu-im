@@ -14,6 +14,7 @@ interface Props {
   handleCloseSingle(index: number): void;
   handleLoadMore(): void;
   numAllImages: number;
+  notFound: boolean;
 }
 
 export default function SingleSwiper(props: Props) {
@@ -72,14 +73,13 @@ export default function SingleSwiper(props: Props) {
         })}
         <SwiperSlide>
           <div className="single-last slide-div">
-            {/* {
-                            props.loadedImageList.length < props.numAllImages ?
-                            <div className='loading-icon single-loading'></div>:
-                            <button id='single-load-more' onClick={props.handleLoadMore}>Load more</button>
-                        }    */}
-            <button id="single-load-more" onClick={props.handleLoadMore}>
-              Load more
-            </button>
+            {!props.notFound ? (
+              <button id="single-load-more" onClick={props.handleLoadMore}>
+                Load More
+              </button>
+            ) : (
+              <div>Nothing more to show</div>
+            )}
           </div>
         </SwiperSlide>
       </Swiper>
