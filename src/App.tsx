@@ -127,11 +127,6 @@ function App() {
           backgroundColor: footerColor,
         }}
       >
-        {/* {
-          loadedImageList.length < imageList.length || imageList.length==0 ?
-          <div className='loading-icon app-loading'></div>:
-          <button id='btn-load-more' onClick={handleLoadMore}>Load More</button>
-        }  */}
         {!notFound ? (
           <button id="btn-load-more" onClick={handleLoadMore}>
             Load More
