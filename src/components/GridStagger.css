@@ -6,7 +6,7 @@
 
 .stagger-container > div {
   position: absolute;
-  /* padding: 0.5vh 0.5vw; */
+  scroll-margin: 20px;
 
   box-sizing: border-box;
   transform-origin: top left;
