@@ -61,16 +61,11 @@ export function getRandomImages(
   }
   url += "&many=true";
   return fetch(url, { mode: "cors" })
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.code == 404) {
-        console.log(`An 404 error occured, message=${data.message}`);
-        return [];
-      }
-      return data.images; //.slice(0, 5);
-    })
+    .then((response) => (response.status !== 200 ? null : response.json()))
+    .then((data) => (data ? data.images : []))
     .catch((error) => {
       console.log("Error caught while getRandomImages");
       return [];
     });
 }
+//.slice(0, 5)
