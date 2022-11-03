@@ -13,9 +13,13 @@ export interface Tags {
   excluded: string[];
 }
 
-function App() {
+interface Props {
+  nsfw: boolean;
+}
+
+function App(props: Props) {
   let [tags, setTags] = useState<Tags>({ selected: [], excluded: [] });
-  let [isNsfw, setIsNsfw] = useState(0); //possible values 0,1,2
+  let [isNsfw, setIsNsfw] = useState(props.nsfw ? 2 : 0); //possible values 0,1,2
   let [notFound, setNotFound] = useState(false);
   let [imageList, setImageList] = useState<Image0[]>([]);
   let [visibleUI, setVisibleUI] = useState(false);
