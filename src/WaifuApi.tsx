@@ -6,7 +6,6 @@ export interface Tag {
 }
 
 export interface Image0 {
-  file: string;
   extension: string;
   image_id: number;
   dominant_color: string;
@@ -41,7 +40,7 @@ export function getAllTags(): Promise<{ sfw: Tag[]; nsfw: Tag[] }> {
 export function getRandomImages(
   selected_tags?: string[],
   excluded_tags?: string[],
-  excluded_files?: string[],
+  excluded_files?: number[],
   is_nsfw = 0,
   gif?: Boolean,
   order_by?: "FAVORITES" | "UPLOADED_AT",

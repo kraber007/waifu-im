@@ -63,7 +63,7 @@ function App() {
   // },[visibleSingle])
 
   const handleLoadMore = () => {
-    let excluded_files = imageList.map((image) => image.file);
+    let excluded_files = imageList.map((image) => image.image_id);
     getRandomImages(tags.selected, tags.excluded, excluded_files, isNsfw).then(
       (list) => {
         if (list.length == 0) {
