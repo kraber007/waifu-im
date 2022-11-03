@@ -59,9 +59,16 @@ export function getRandomImages(
       break;
   }
   url += "&many=true";
+
+  let params = new URLSearchParams(window.location.search);
+  console.log("params: ", params);
+  let param_max = Number(params.get("max"));
+  if (params.has("gif")) url += "&gif=true";
+  let max = param_max ? param_max : 10;
+
   return fetch(url, { mode: "cors" })
     .then((response) => (response.status !== 200 ? null : response.json()))
-    .then((data) => (data ? data.images : []))
+    .then((data) => (data ? data.images.slice(0, max) : []))
     .catch((error) => {
       console.log("Error caught while getRandomImages");
       return [];
