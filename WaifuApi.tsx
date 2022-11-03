@@ -42,7 +42,7 @@ export function getRandomImages(
   excluded_tags?: string[],
   excluded_files?: number[],
   is_nsfw = 0,
-  gif?: Boolean,
+  is_gif = 1,
   order_by?: "FAVORITES" | "UPLOADED_AT",
   many = true
 ): Promise<Image0[]> {
@@ -58,12 +58,18 @@ export function getRandomImages(
       url += "&is_nsfw=true";
       break;
   }
+  switch (is_gif) {
+    case 0:
+      url += "&gif=false";
+      break;
+    case 2:
+      url += "&gif=true";
+      break;
+  }
   url += "&many=true";
 
   let params = new URLSearchParams(window.location.search);
-  console.log("params: ", params);
   let param_max = Number(params.get("max"));
-  if (params.has("gif")) url += "&gif=true";
   let max = param_max ? param_max : 10;
 
   return fetch(url, { mode: "cors" })
