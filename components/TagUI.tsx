@@ -9,13 +9,16 @@ interface Props {
   setVisibleUI(bool: boolean): any;
   tags: Tags;
   setTags(tags: Tags): void;
-  isNsfw: number;
-  setIsNsfw(val: number): void;
+  isNsfw: string;
+  setIsNsfw(val: string): void;
+  isGif: string;
+  setIsGif(val: string): void;
 }
 
 export default function TagUI(props: Props) {
-  let [tagStates, setTagStates] = useState<number[]>([]);
+  let [tagStates, setTagStates] = useState<string[]>([]);
   let [nsfwUIState, setNsfwUIState] = useState(props.isNsfw);
+  let [gifUIState, setGifUIState] = useState(props.isGif);
   let [allTags, setAllTags] = useState<{ sfw: Tag[]; nsfw: Tag[] }>({
     sfw: [],
     nsfw: [],
@@ -23,14 +26,14 @@ export default function TagUI(props: Props) {
 
   useEffect(() => {
     getAllTags().then((data) => {
-      let tmpTagStates: number[] = [];
+      let tmpTagStates: string[] = [];
       let tmpAllTags: { sfw: Tag[]; nsfw: Tag[] } = { sfw: [], nsfw: [] };
       data.sfw.forEach((tag) => {
-        tmpTagStates.push(1);
+        tmpTagStates.push("1");
         tmpAllTags.sfw.push(tag);
       });
       data.nsfw.forEach((tag) => {
-        tmpTagStates.push(1);
+        tmpTagStates.push("1");
         tmpAllTags.nsfw.push(tag);
       });
       setAllTags(tmpAllTags);
@@ -41,7 +44,7 @@ export default function TagUI(props: Props) {
   const onTagChangeHandler = (e: any) => {
     // console.log(e.target.dataset.index);
     let tmpTagStates = tagStates.concat([]);
-    tmpTagStates[e.target.dataset.index] = e.target.valueAsNumber;
+    tmpTagStates[e.target.dataset.index] = e.target.value;
     setTagStates(tmpTagStates);
   };
 
@@ -51,13 +54,13 @@ export default function TagUI(props: Props) {
     let excluded_tags: string[] = [];
     let allTagsList = allTags.sfw.concat(allTags.nsfw);
     tagStates.forEach((state, index) => {
-      if (!nsfwUIState && allTagsList[index].is_nsfw == true) {
+      if (nsfwUIState == "0" && allTagsList[index].is_nsfw == true) {
         return;
       }
-      if (state === 2) {
+      if (state === "2") {
         selected_tags.push(allTagsList[index].name);
       }
-      if (state === 0) {
+      if (state === "0") {
         excluded_tags.push(allTagsList[index].name);
       }
     });
@@ -68,10 +71,16 @@ export default function TagUI(props: Props) {
     if (nsfwUIState !== props.isNsfw) {
       props.setIsNsfw(nsfwUIState);
     }
+    if (gifUIState !== props.isGif) {
+      props.setIsGif(gifUIState);
+    }
   };
 
   const onNsfwChangeHandler = (e: any) => {
-    setNsfwUIState(e.target.valueAsNumber);
+    setNsfwUIState(e.target.value);
+  };
+  const onGifChangeHandler = (e: any) => {
+    setGifUIState(e.target.value);
   };
 
   return (
@@ -120,7 +129,7 @@ export default function TagUI(props: Props) {
 
           <div
             className={`${styles.nsfw_tags} ${
-              nsfwUIState ? styles.nsfw_visible : styles.nsfw_hidden
+              nsfwUIState !== "0" ? styles.nsfw_visible : styles.nsfw_hidden
             }`}
           >
             <hr />
@@ -141,6 +150,20 @@ export default function TagUI(props: Props) {
                 </div>
               );
             })}
+          </div>
+
+          <hr />
+          <div className={styles.tag} key={"gif-toggler"}>
+            <input
+              type="range"
+              id={"gif-toggler"}
+              name={"gif-toggler"}
+              min={0}
+              max={2}
+              value={gifUIState}
+              onChange={onGifChangeHandler}
+            />
+            <label htmlFor={"gif-toggler"}>{"GIF"}</label>
           </div>
 
           <button onClick={submitHandler}>Submit</button>

@@ -26,47 +26,11 @@ let useWindowWidth = () => {
   return windowWidth;
 };
 
-let parseNumber = (str: string) => {
-  if (!isNaN(Number(str))) {
-    console.log("parseNumber: ", Number(str));
-    return Number(str);
-  } else {
-    alert("invalid url query parameter");
-  }
-  return -1;
-};
-
-export const useQueryState = (key, initialState) => {
-  const router = useRouter();
-  const [state, setState] = useState(initialState);
-
-  useEffect(() => {
-    console.log(
-      "useEffect called with key:",
-      key,
-      "with value:",
-      parseNumber(router.query[key])
-    );
-    setState(parseNumber(router.query[key]));
-  }, [router.query[key]]);
-
-  const setQueryParams = (newValue) => {
-    let newQuery = router.query;
-    newQuery[key] = newValue;
-    router.push({ pathname: router.pathname, query: newQuery }, undefined, {
-      shallow: true,
-    });
-  };
-
-  return [state, setQueryParams];
-};
-
 export default function Home() {
   console.log("----------------------begin render-------------------------");
-  let [tags, setTags] = useState<Tags>({ selected: [], excluded: [] });
-  // let [isNsfw, setIsNsfw] = useState(0); //possible values 0,1,2
-  let [isNsfw, setIsNsfwQ] = useState(0); //possible values 0,1,2
-  let [isGif, setIsGifQ] = useState(1); //possible values 0,1,2
+  let [tags, setTagsQ] = useState<Tags>({ selected: [], excluded: [] });
+  let [isNsfw, setIsNsfwQ] = useState("0"); //possible values 0,1,2
+  let [isGif, setIsGifQ] = useState("0"); //possible values 0,1,2
   let [notFound, setNotFound] = useState(false);
   let [imageList, setImageList] = useState<Image0[]>([]);
   let [visibleUI, setVisibleUI] = useState(false);
@@ -92,6 +56,13 @@ export default function Home() {
       shallow: true,
     });
   };
+  let setTags = (value) => {
+    query.tags = JSON.stringify(value);
+    console.log({ value, query });
+    router.push({ pathname: router.pathname, query: query }, undefined, {
+      shallow: true,
+    });
+  };
 
   useEffect(() => {
     if (!router.isReady) return;
@@ -99,16 +70,22 @@ export default function Home() {
     console.log({ query });
 
     for (let key in router.query) {
+      let value = JSON.parse(query[key]);
       switch (key) {
         case "nsfw": {
-          setIsNsfwQ(parseNumber(query[key]));
+          setIsNsfwQ(value);
           break;
         }
         case "gif": {
-          setIsGifQ(parseNumber(query[key]));
+          setIsGifQ(value);
+          break;
+        }
+        case "tags": {
+          setTagsQ(value);
           break;
         }
       }
+      console.log("Parsing Query, key:", key, ", value:", value);
     }
 
     setQueryDone(true);
@@ -117,11 +94,10 @@ export default function Home() {
   console.log({ isNsfw, isGif, queryDone });
 
   useEffect(() => {
-    if (!queryDone) return;
     if (imageList.length > 0) {
       setHeaderColor(imageList[0].dominant_color);
     }
-  }, [imageList, queryDone]);
+  }, [imageList]);
 
   useEffect(() => {
     if (!queryDone) return;
@@ -221,6 +197,8 @@ export default function Home() {
         setTags={setTags}
         isNsfw={isNsfw}
         setIsNsfw={setIsNsfw}
+        isGif={isGif}
+        setIsGif={setIsGif}
       />
       <GridStagger
         imageList={imageList}
