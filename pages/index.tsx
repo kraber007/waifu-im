@@ -26,11 +26,13 @@ let useWindowWidth = () => {
   return windowWidth;
 };
 
+//TODO: TAGUI not reflecting changes made in selected tags
 export default function Home() {
   console.log("----------------------begin render-------------------------");
-  let [tags, setTagsQ] = useState<Tags>({ selected: [], excluded: [] });
-  let [isNsfw, setIsNsfwQ] = useState("0"); //possible values 0,1,2
-  let [isGif, setIsGifQ] = useState("0"); //possible values 0,1,2
+  let initials = { tags: { selected: [], excluded: [] }, nsfw: 0, gif: 1 };
+  let [tags, setTagsQ] = useState<Tags>(initials.tags);
+  let [isNsfw, setIsNsfwQ] = useState(initials.nsfw); //possible values 0,1,2
+  let [isGif, setIsGifQ] = useState(initials.gif); //possible values 0,1,2
   let [notFound, setNotFound] = useState(false);
   let [imageList, setImageList] = useState<Image0[]>([]);
   let [visibleUI, setVisibleUI] = useState(false);
@@ -45,22 +47,22 @@ export default function Home() {
 
   let query = router.query;
   let setIsNsfw = (value) => {
-    query.nsfw = value;
+    query.nsfw = JSON.stringify(value);
     router.push({ pathname: router.pathname, query: query }, undefined, {
-      shallow: true,
+      shallow: false,
     });
   };
   let setIsGif = (value) => {
-    query.gif = value;
+    query.gif = JSON.stringify(value);
     router.push({ pathname: router.pathname, query: query }, undefined, {
-      shallow: true,
+      shallow: false,
     });
   };
   let setTags = (value) => {
     query.tags = JSON.stringify(value);
     console.log({ value, query });
     router.push({ pathname: router.pathname, query: query }, undefined, {
-      shallow: true,
+      shallow: false,
     });
   };
 
@@ -69,19 +71,52 @@ export default function Home() {
     let query = router.query;
     console.log({ query });
 
+    // if ("nsfw" in query) {
+    //   setIsNsfwQ(JSON.parse(query["nsfw"]));
+    // } else {
+    //   setIsNsfwQ(initials["nsfw"]);
+    // }
+    // if ("gif" in query) {
+    //   setIsGifQ(JSON.parse(query["gif"]));
+    // } else {
+    //   setIsGifQ(initials["gif"]);
+    // }
+    // if ("tags" in query) {
+    //   setTagsQ(JSON.parse(query["tags"]));
+    // } else {
+    //   setTagsQ(initials["tags"]);
+    // }
+
+    if ("nsfw" in query) {
+      console.log("AAAAAAAAAAAAAAAAAAA");
+    } else {
+      query["nsfw"] = JSON.stringify(initials["nsfw"]);
+    }
+    if ("gif" in query) {
+      console.log("BBBBBBBBBBBBBBBBBBBBBBBBBB");
+    } else {
+      query["gif"] = JSON.stringify(initials["gif"]);
+    }
+    if ("tags" in query) {
+      console.log("CCCCCCCCCCCCCCCCCCCCCCCCCc");
+    } else {
+      query["tags"] = JSON.stringify(initials["tags"]);
+    }
+
     for (let key in router.query) {
-      let value = JSON.parse(query[key]);
+      console.log(query[key]);
+      let value = query[key];
       switch (key) {
         case "nsfw": {
-          setIsNsfwQ(value);
+          setIsNsfwQ(Number(value));
           break;
         }
         case "gif": {
-          setIsGifQ(value);
+          setIsGifQ(Number(value));
           break;
         }
         case "tags": {
-          setTagsQ(value);
+          setTagsQ(JSON.parse(value));
           break;
         }
       }
@@ -91,7 +126,11 @@ export default function Home() {
     setQueryDone(true);
   }, [router.query]);
 
-  console.log({ isNsfw, isGif, queryDone });
+  // useEffect(() => {
+  //   setCount(0);
+  // }, [router.query.slug]);
+
+  console.log({ isNsfw, isGif, tags });
 
   useEffect(() => {
     if (imageList.length > 0) {
@@ -109,7 +148,7 @@ export default function Home() {
         setNotFound(list.length == 0);
       }
     );
-  }, [tags, isNsfw, queryDone]);
+  }, [tags, isNsfw, isGif, queryDone]);
 
   const toggleUI = () => {
     //toggle tag select UI
@@ -186,6 +225,13 @@ export default function Home() {
           backgroundColor: headerColor,
         }}
       >
+        {notFound ? (
+          <div style={{ fontSize: "30px" }}>
+            Nothing more to show <br /> Please change filters and tags
+          </div>
+        ) : (
+          <></>
+        )}
         <button id={styles.btn_select_tags} onClick={toggleUI}>
           {visibleUI ? "Hide Tags" : "Select Tags"}
         </button>
@@ -219,7 +265,9 @@ export default function Home() {
             Load More
           </button>
         ) : (
-          <div>Nothing more to show</div>
+          <div>
+            Nothing more to show <br /> Please change filters and tags
+          </div>
         )}
       </div>
     </div>

@@ -9,14 +9,14 @@ interface Props {
   setVisibleUI(bool: boolean): any;
   tags: Tags;
   setTags(tags: Tags): void;
-  isNsfw: string;
-  setIsNsfw(val: string): void;
-  isGif: string;
-  setIsGif(val: string): void;
+  isNsfw: number;
+  setIsNsfw(val: number): void;
+  isGif: number;
+  setIsGif(val: number): void;
 }
 
 export default function TagUI(props: Props) {
-  let [tagStates, setTagStates] = useState<string[]>([]);
+  let [tagStates, setTagStates] = useState<number[]>([]);
   let [nsfwUIState, setNsfwUIState] = useState(props.isNsfw);
   let [gifUIState, setGifUIState] = useState(props.isGif);
   let [allTags, setAllTags] = useState<{ sfw: Tag[]; nsfw: Tag[] }>({
@@ -26,14 +26,14 @@ export default function TagUI(props: Props) {
 
   useEffect(() => {
     getAllTags().then((data) => {
-      let tmpTagStates: string[] = [];
+      let tmpTagStates: number[] = [];
       let tmpAllTags: { sfw: Tag[]; nsfw: Tag[] } = { sfw: [], nsfw: [] };
       data.sfw.forEach((tag) => {
-        tmpTagStates.push("1");
+        tmpTagStates.push(1);
         tmpAllTags.sfw.push(tag);
       });
       data.nsfw.forEach((tag) => {
-        tmpTagStates.push("1");
+        tmpTagStates.push(1);
         tmpAllTags.nsfw.push(tag);
       });
       setAllTags(tmpAllTags);
@@ -44,7 +44,7 @@ export default function TagUI(props: Props) {
   const onTagChangeHandler = (e: any) => {
     // console.log(e.target.dataset.index);
     let tmpTagStates = tagStates.concat([]);
-    tmpTagStates[e.target.dataset.index] = e.target.value;
+    tmpTagStates[e.target.dataset.index] = e.target.valueAsNumber;
     setTagStates(tmpTagStates);
   };
 
@@ -54,13 +54,13 @@ export default function TagUI(props: Props) {
     let excluded_tags: string[] = [];
     let allTagsList = allTags.sfw.concat(allTags.nsfw);
     tagStates.forEach((state, index) => {
-      if (nsfwUIState == "0" && allTagsList[index].is_nsfw == true) {
+      if (nsfwUIState == 0 && allTagsList[index].is_nsfw == true) {
         return;
       }
-      if (state === "2") {
+      if (state === 2) {
         selected_tags.push(allTagsList[index].name);
       }
-      if (state === "0") {
+      if (state === 0) {
         excluded_tags.push(allTagsList[index].name);
       }
     });
@@ -77,10 +77,10 @@ export default function TagUI(props: Props) {
   };
 
   const onNsfwChangeHandler = (e: any) => {
-    setNsfwUIState(e.target.value);
+    setNsfwUIState(e.target.valueAsNumber);
   };
   const onGifChangeHandler = (e: any) => {
-    setGifUIState(e.target.value);
+    setGifUIState(e.target.valueAsNumber);
   };
 
   return (
@@ -129,7 +129,7 @@ export default function TagUI(props: Props) {
 
           <div
             className={`${styles.nsfw_tags} ${
-              nsfwUIState !== "0" ? styles.nsfw_visible : styles.nsfw_hidden
+              nsfwUIState !== 0 ? styles.nsfw_visible : styles.nsfw_hidden
             }`}
           >
             <hr />
